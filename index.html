@@ -1,0 +1,748 @@
+<!DOCTYPE html>
+
+<html lang="en" class="scroll-smooth">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="SANMUGAM A - Full Stack Developer & AI Enthusiast Portfolio" />
+  <meta name="keywords" content="SANMUGAM, Portfolio, Full Stack, Developer, AI, Java, React, Tailwind" />
+  <meta name="author" content="SANMUGAM A" />
+  <title>SANMUGAM A | Portfolio</title>
+  <!-- Google Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&family=Poppins:wght@600&display=swap" rel="stylesheet">
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- FontAwesome for icons -->
+  <script src="https://kit.fontawesome.com/2b8e2e6e7a.js" crossorigin="anonymous"></script>
+  <style>
+    html { font-family: 'Inter', 'Poppins', sans-serif; }
+    .floating-toggle { z-index: 50; }
+    .wave-bg {
+      position: absolute; left: 0; right: 0; top: 0; height: 100%; pointer-events: none;
+      background: linear-gradient(135deg, #6366f1 0%, #0ea5e9 100%);
+      opacity: 0.15;
+      clip-path: polygon(0 0, 100% 0, 100% 80%, 0 100%);
+    }
+    .scroll-top-btn { z-index: 40; }
+    .fade-in { opacity: 0; transform: translateY(30px); transition: all 0.8s cubic-bezier(.4,0,.2,1); }
+    .fade-in.visible { opacity: 1; transform: none; }
+    .scroll-fade-in { opacity: 0; transform: translateY(40px); transition: all 0.8s cubic-bezier(.4,0,.2,1); }
+    .scroll-fade-in.visible { opacity: 1; transform: none; }
+    .scroll-slide-in { opacity: 0; transform: translateX(-40px); transition: all 0.8s cubic-bezier(.4,0,.2,1); }
+    .scroll-slide-in.visible { opacity: 1; transform: none; }
+    .scroll-zoom-in { opacity: 0; transform: scale(0.95); transition: all 0.8s cubic-bezier(.4,0,.2,1); }
+    .scroll-zoom-in.visible { opacity: 1; transform: scale(1); }
+    .btn-animate { transition: transform 0.2s cubic-bezier(.4,0,.2,1), box-shadow 0.2s cubic-bezier(.4,0,.2,1); }
+    .btn-animate:hover { transform: scale(1.06); box-shadow: 0 8px 32px 0 rgba(99,102,241,0.18); }
+    .pulse { animation: pulse 1.5s infinite; }
+    @keyframes pulse { 0%,100%{box-shadow:0 0 0 0 rgba(99,102,241,0.4);} 70%{box-shadow:0 0 0 12px rgba(99,102,241,0);} }
+    .float-img { animation: floatImg 3s ease-in-out infinite alternate; }
+    @keyframes floatImg { 0%{transform:translateY(0);} 100%{transform:translateY(-18px);} }
+    .card-float { transition: transform 0.4s cubic-bezier(.4,0,.2,1), box-shadow 0.4s cubic-bezier(.4,0,.2,1); }
+    .card-float:hover { transform: translateY(-10px) scale(1.03) rotateZ(-1deg); box-shadow: 0 12px 32px 0 rgba(99,102,241,0.12); }
+    .parallax-bg { will-change: transform; transition: transform 0.3s cubic-bezier(.4,0,.2,1); }
+    .scroll-top-float { transition: transform 0.3s cubic-bezier(.4,0,.2,1), box-shadow 0.3s cubic-bezier(.4,0,.2,1); }
+    .scroll-top-float:hover { transform: scale(1.12) translateY(-6px); box-shadow: 0 8px 32px 0 rgba(99,102,241,0.18); }
+  </style>
+</head>
+
+<body class="bg-white dark:bg-gray-900 text-gray-900 dark:text-gray-100 transition-colors duration-500 relative">
+
+  <!-- Floating Theme Toggle -->
+  <button id="theme-toggle" aria-label="Toggle Dark Mode"
+    class="floating-toggle fixed top-5 right-5 bg-white dark:bg-gray-800 shadow-lg rounded-full p-3 transition-colors hover:bg-gray-100 dark:hover:bg-gray-700">
+    <i id="theme-icon" class="fas fa-moon text-xl"></i>
+  </button>
+
+  <!-- Scroll to Top Button -->
+  <button id="scroll-top" class="scroll-top-btn fixed bottom-6 right-6 bg-indigo-600 text-white p-3 rounded-full shadow-lg opacity-0 pointer-events-none transition-all duration-300 hover:bg-indigo-700 scroll-top-float">
+    <i class="fas fa-arrow-up"></i>
+  </button>
+
+  <!-- Sticky Navbar -->
+  <nav class="sticky top-0 z-50 bg-white/70 dark:bg-gray-900/70 backdrop-blur-lg border-b border-indigo-100 dark:border-indigo-900 shadow-2xl transition-all duration-500">
+    <div class="max-w-5xl mx-auto flex items-center justify-between px-4 py-3">
+      <span class="font-bold text-lg tracking-wide text-indigo-700 dark:text-indigo-300 flex items-center gap-2">
+        <i class="fas fa-user-astronaut"></i> SANMUGAM A
+      </span>
+      <ul class="flex gap-6 font-medium">
+        <li><a href="#home" class="hover:text-indigo-600 transition">Home</a></li>
+        <li><a href="#about" class="hover:text-indigo-600 transition">About</a></li>
+        <li><a href="#projects" class="hover:text-indigo-600 transition">Projects</a></li>
+        <li><a href="#contact" class="hover:text-indigo-600 transition">Contact</a></li>
+      </ul>
+    </div>
+  </nav>
+
+  <!-- Home Section -->
+  <!-- Shooting Star Animation -->
+  
+  <!-- Enhanced Shooting Star Animation: Smooth, Gentle, Many Stars -->
+  <div id="starfield" style="position:fixed;top:0;left:0;width:100vw;height:100vh;pointer-events:none;z-index:0;"></div>
+  <script>
+    // Generate static background stars
+    function createBackgroundStars(count = 120) {
+      const starfield = document.getElementById('starfield');
+      for (let i = 0; i < count; i++) {
+        const star = document.createElement('div');
+        const size = Math.random() * 1.2 + 0.4;
+        star.style.position = 'absolute';
+        star.style.top = `${Math.random() * 100}vh`;
+        star.style.left = `${Math.random() * 100}vw`;
+        star.style.width = `${size}px`;
+        star.style.height = `${size}px`;
+        star.style.borderRadius = '50%';
+        star.style.background = 'white';
+        star.style.opacity = (Math.random() * 0.5 + 0.3).toFixed(2);
+        star.style.boxShadow = `0 0 ${2 + Math.random() * 6}px ${Math.random() * 2}px #a5b4fc`;
+        star.style.filter = `blur(${Math.random() * 0.7}px)`;
+        // Twinkle animation
+        star.style.animation = `twinkle ${2 + Math.random() * 3}s infinite alternate`;
+        starfield.appendChild(star);
+      }
+    }
+
+    // Twinkle keyframes
+    const twinkleStyle = document.createElement('style');
+    twinkleStyle.innerHTML = `
+      @keyframes twinkle {
+        0% { opacity: 0.5; }
+        50% { opacity: 1; }
+        100% { opacity: 0.4; }
+      }
+    `;
+    document.head.appendChild(twinkleStyle);
+
+    // Enhanced shooting star
+    function createShootingStar() {
+      const star = document.createElement('div');
+      star.className = 'shooting-star';
+      // Randomize vertical position (10% to 60% of viewport height)
+      const top = 10 + Math.random() * 50;
+      star.style.top = `${top}vh`;
+      // Randomize width and duration
+      const width = 80 + Math.random() * 80;
+      star.style.width = `${width}px`;
+      star.style.height = `${1.2 + Math.random() * 1.2}px`;
+      star.style.opacity = (0.5 + Math.random() * 0.5).toFixed(2);
+      // Gentle pastel color
+      const hue = 210 + Math.random() * 60;
+      star.style.background = `linear-gradient(90deg, #fff 0%, hsl(${hue}, 90%, 85%) 80%, rgba(255,255,255,0) 100%)`;
+      // Animation duration and delay
+      const duration = 1.2 + Math.random() * 1.2;
+      star.style.animationDuration = `${duration}s`;
+      // Randomize angle
+      const angle = 10 + Math.random() * 20;
+      star.style.transform = `rotate(${angle}deg)`;
+      // Add gentle blur
+      star.style.filter = `blur(${Math.random() * 0.7 + 0.2}px)`;
+      // Z-index above background stars
+      star.style.zIndex = 2;
+      document.body.appendChild(star);
+      star.addEventListener('animationend', () => {
+        star.remove();
+      });
+    }
+
+    // Many shooting stars, gentle, not overwhelming
+    setInterval(() => {
+      // 0-2 shooting stars per interval, with some randomness
+      const count = Math.random() < 0.7 ? 1 : 2;
+      for (let i = 0; i < count; i++) {
+        setTimeout(createShootingStar, Math.random() * 800);
+      }
+    }, 1200);
+
+    // On load, create background stars
+    window.addEventListener('DOMContentLoaded', () => {
+      createBackgroundStars();
+    });
+  </script>
+   
+  <style>
+    .shooting-star {
+      position: fixed;
+      top: 10%;
+      left: -100px;
+      width: 80px;
+      height: 2px;
+      background: linear-gradient(90deg, #fff 0%, #a5b4fc 80%, rgba(255,255,255,0) 100%);
+      opacity: 0.85;
+      z-index: 9999;
+      pointer-events: none;
+      border-radius: 2px;
+      box-shadow: 0 0 8px 2px #a5b4fc, 0 0 24px 8px #6366f1;
+      animation: shooting-star-move 1.2s linear forwards;
+    }
+    @keyframes shooting-star-move {
+      0% {
+        transform: translateY(0) translateX(0) rotate(15deg) scaleX(1);
+        opacity: 0.85;
+      }
+      80% {
+        opacity: 1;
+      }
+      100% {
+        transform: translateY(180px) translateX(110vw) rotate(15deg) scaleX(1.2);
+        opacity: 0;
+      }
+    }
+  </style>
+  <script>
+    function createShootingStar() {
+      const star = document.createElement('div');
+      star.className = 'shooting-star';
+      // Randomize vertical position (10% to 40% of viewport height)
+      const top = 10 + Math.random() * 30;
+      star.style.top = `${top}vh`;
+      // Randomize width and duration a bit
+      const width = 60 + Math.random() * 60;
+      star.style.width = `${width}px`;
+      star.style.animationDuration = `${0.9 + Math.random() * 0.7}s`;
+      document.body.appendChild(star);
+      star.addEventListener('animationend', () => {
+        star.remove();
+      });
+    }
+    // Periodically create shooting stars
+    setInterval(() => {
+      if (Math.random() < 0.6) { // 60% chance per interval
+        createShootingStar();
+      }
+    }, 1800);
+    // Initial burst
+    for (let i = 0; i < 2; i++) setTimeout(createShootingStar, 500 + i * 400);
+  </script>
+  
+  <section id="home" class="relative min-h-screen flex flex-col justify-center items-center text-center overflow-hidden bg-white/70 dark:bg-gray-900/70 backdrop-blur-lg shadow-2xl border-b border-indigo-100 dark:border-indigo-900 scroll-fade-in">
+    <div class="wave-bg parallax-bg"></div>
+    <div class="relative z-10">
+      <h1 class="text-5xl md:text-7xl font-extrabold mb-4 tracking-tight text-indigo-700 dark:text-indigo-300 animate__animated animate__fadeInDown" style="font-family: 'Poppins', sans-serif;">
+        <i class="fas fa-laptop-code mr-2"></i>SANMUGAM A
+      </h1>
+
+      <h2 class="text-2xl md:text-3xl font-medium mb-8 text-indigo-600 dark:text-indigo-400 animate__animated animate__fadeInUp" id="typing-role">
+        <i class="fas fa-brain mr-2"></i>
+        <span id="typed-text"></span><span id="typed-cursor" style="display:inline-block;width:1ch;">|</span>
+      </h2>
+      <script>
+        // Roles to display
+        const roles = [
+          "Full Stack Developer",
+          "Software Developer",
+          "UI & UX Designer"
+        ];
+        const typingSpeed = 80; // ms per character
+        const erasingSpeed = 40;
+        const delayBetweenRoles = 1200; // ms to wait after typing a role
+        let roleIndex = 0;
+        let charIndex = 0;
+        let typing = true;
+
+        const typedText = document.getElementById('typed-text');
+        const cursor = document.getElementById('typed-cursor');
+
+        function typeRole() {
+          const currentRole = roles[roleIndex];
+          if (typing) {
+            if (charIndex < currentRole.length) {
+              typedText.textContent += currentRole.charAt(charIndex);
+              charIndex++;
+              setTimeout(typeRole, typingSpeed);
+            } else {
+              typing = false;
+              setTimeout(typeRole, delayBetweenRoles);
+            }
+          } else {
+            if (charIndex > 0) {
+              typedText.textContent = currentRole.substring(0, charIndex - 1);
+              charIndex--;
+              setTimeout(typeRole, erasingSpeed);
+            } else {
+              typing = true;
+              roleIndex = (roleIndex + 1) % roles.length;
+              setTimeout(typeRole, 400);
+            }
+          }
+        }
+
+        // Blinking cursor effect
+        setInterval(() => {
+          cursor.style.opacity = cursor.style.opacity === "0" ? "1" : "0";
+        }, 500);
+
+        // Start typing animation after DOM is ready
+        document.addEventListener("DOMContentLoaded", () => {
+          typeRole();
+        });
+      </script>
+      <!-- <h2 class="text-2xl md:text-3xl font-medium mb-8 text-indigo-600 dark:text-indigo-400 animate__animated animate__fadeInUp">
+        <i class="fas fa-brain mr-2"></i>Full Stack Developer & AI Enthusiast
+      </h2> -->
+      
+      <a href="assets\resume\Sanmugam_Resume.pdf" download
+        class="inline-block px-8 py-3 bg-gradient-to-r from-indigo-500 via-blue-500 to-indigo-600 text-white rounded-full shadow-lg font-semibold text-lg hover:from-indigo-600 hover:to-blue-600 transition-all duration-300 animate-bounce ring-2 ring-indigo-400 dark:ring-indigo-700 btn-animate pulse">
+        <i class="fas fa-download mr-2"></i>Download Resume
+      </a>
+    </div>
+  </section>
+
+  <!-- About Me Section -->
+  <section id="about" class="max-w-4xl mx-auto py-20 px-4 bg-white/70 dark:bg-gray-900/70 backdrop-blur-lg rounded-2xl shadow-2xl border border-indigo-100 dark:border-indigo-900 mt-12 scroll-slide-in">
+    <div class="flex flex-col md:flex-row items-center gap-10">
+      <div class="flex-shrink-0">
+        <img src="assets\photo\me.jpg" alt="Profile" class="w-44 h-44 rounded-full border-4 border-indigo-500 shadow-xl object-cover transition-transform duration-300 hover:scale-110 hover:shadow-indigo-400/60 hover:ring-4 hover:ring-indigo-300 float-img" />
+      </div>
+      <div>
+        <h3 class="text-2xl font-bold mb-3 text-indigo-700 dark:text-indigo-300 flex items-center gap-2"><i class="fas fa-user-circle"></i> About Me</h3>
+        <p class="mb-5 text-lg leading-relaxed text-gray-700 dark:text-gray-200">
+          I'm a passionate Full Stack Developer with a strong foundation in Java, React, and AI. I graduated with a B.E. in Computer Science and have completed a brain tumor detection project and a Java Full Stack internship.
+        </p>
+        <div class="grid grid-cols-2 sm:grid-cols-3 gap-3 mt-6">
+          <span class="inline-block px-3 py-1 bg-indigo-100 dark:bg-indigo-800 text-indigo-700 dark:text-indigo-200 rounded-full text-sm font-medium shadow hover:scale-110 transition-transform duration-200 cursor-pointer"><i class="fab fa-java mr-1"></i>Java</span>
+          <span class="inline-block px-3 py-1 bg-indigo-100 dark:bg-indigo-800 text-indigo-700 dark:text-indigo-200 rounded-full text-sm font-medium shadow hover:scale-110 transition-transform duration-200 cursor-pointer"><i class="fas fa-leaf mr-1"></i>Spring Boot</span>
+          <span class="inline-block px-3 py-1 bg-indigo-100 dark:bg-indigo-800 text-indigo-700 dark:text-indigo-200 rounded-full text-sm font-medium shadow hover:scale-110 transition-transform duration-200 cursor-pointer"><i class="fab fa-react mr-1"></i>React.js</span>
+          <span class="inline-block px-3 py-1 bg-indigo-100 dark:bg-indigo-800 text-indigo-700 dark:text-indigo-200 rounded-full text-sm font-medium shadow hover:scale-110 transition-transform duration-200 cursor-pointer"><i class="fab fa-node-js mr-1"></i>Node.js</span>
+          <span class="inline-block px-3 py-1 bg-indigo-100 dark:bg-indigo-800 text-indigo-700 dark:text-indigo-200 rounded-full text-sm font-medium shadow hover:scale-110 transition-transform duration-200 cursor-pointer"><i class="fas fa-database mr-1"></i>JavaScript</span>
+          <span class="inline-block px-3 py-1 bg-indigo-100 dark:bg-indigo-800 text-indigo-700 dark:text-indigo-200 rounded-full text-sm font-medium shadow hover:scale-110 transition-transform duration-200 cursor-pointer"><i class="fab fa-python mr-1"></i>Python</span>
+          <span class="inline-block px-3 py-1 bg-indigo-100 dark:bg-indigo-800 text-indigo-700 dark:text-indigo-200 rounded-full text-sm font-medium shadow hover:scale-110 transition-transform duration-200 cursor-pointer"><i class="fab fa-html5 mr-1"></i>Frontend</span>
+          <span class="inline-block px-3 py-1 bg-indigo-100 dark:bg-indigo-800 text-indigo-700 dark:text-indigo-200 rounded-full text-sm font-medium shadow hover:scale-110 transition-transform duration-200 cursor-pointer"><i class="fab fa-css3-alt mr-1"></i>Database-Connectivity</span>
+          <span class="inline-block px-3 py-1 bg-indigo-100 dark:bg-indigo-800 text-indigo-700 dark:text-indigo-200 rounded-full text-sm font-medium shadow hover:scale-110 transition-transform duration-200 cursor-pointer"><i class="fas fa-robot mr-1"></i>AI & ML Basics</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Projects Section -->
+  <!-- Changed "Live Demo" to "Read More" for project links below -->
+  <section id="projects" class="bg-white/70 dark:bg-gray-900/70 backdrop-blur-lg py-20 px-4 rounded-2xl shadow-2xl border border-indigo-100 dark:border-indigo-900 max-w-5xl mx-auto mt-12 scroll-zoom-in">
+    <h3 class="text-2xl font-bold mb-10 text-center text-indigo-700 dark:text-indigo-300 flex items-center gap-2"><i class="fas fa-project-diagram"></i> Projects</h3>
+    <div class="grid md:grid-cols-2 gap-8">
+      <!-- Project 1 -->
+
+      <!-- Project 1: Brain Tumor Detection System -->
+      <div class="bg-white/80 dark:bg-gray-900/80 rounded-2xl shadow-xl p-6 flex flex-col transition-transform hover:-translate-y-2 hover:shadow-indigo-400/40 group border border-indigo-100 dark:border-indigo-900 card-float">
+        <h4 class="text-xl font-semibold mb-2 text-indigo-700 dark:text-indigo-300 flex items-center gap-2"><i class="fas fa-microscope"></i> Brain Tumor Detection System</h4>
+        <div class="flex flex-wrap gap-2 mb-3">
+          <span class="inline-block px-2 py-0.5 bg-indigo-100 dark:bg-indigo-800 text-indigo-700 dark:text-indigo-200 rounded text-xs font-semibold"><i class="fab fa-python mr-1"></i>Python</span>
+          <span class="inline-block px-2 py-0.5 bg-indigo-100 dark:bg-indigo-800 text-indigo-700 dark:text-indigo-200 rounded text-xs font-semibold"><i class="fas fa-brain mr-1"></i>TensorFlow</span>
+          <span class="inline-block px-2 py-0.5 bg-indigo-100 dark:bg-indigo-800 text-indigo-700 dark:text-indigo-200 rounded text-xs font-semibold"><i class="fas fa-flask mr-1"></i>Flask</span>
+        </div>
+        <p class="mb-4 text-gray-700 dark:text-gray-300">A deep learning web app for detecting brain tumors from MRI scans using TensorFlow and Flask.</p>
+        <div class="mt-auto flex gap-3">
+          <button onclick="openPopup('popup-brain-tumor')" class="inline-flex items-center gap-1 px-4 py-2 bg-gradient-to-r from-indigo-500 via-blue-500 to-indigo-600 text-white rounded-lg font-medium shadow hover:from-indigo-600 hover:to-blue-600 transition-all duration-300 btn-animate">
+            <i class="fas fa-book-open mr-1"></i>Read More
+          </button>
+          <a href="https://github.com/sanmugam/brain-tumor-detection" target="_blank" class="inline-flex items-center gap-1 px-4 py-2 bg-gray-800 dark:bg-gray-700 hover:bg-gray-900 text-white rounded-lg font-medium shadow transition-all duration-300 btn-animate">
+            <i class="fab fa-github mr-1"></i>GitHub
+          </a>
+        </div>
+      </div>
+      <!-- Popup for Brain Tumor Detection System -->
+      <div id="popup-brain-tumor" class="fixed inset-0 z-50 flex items-center justify-center bg-black/40 backdrop-blur-sm hidden">
+        <div class="bg-white dark:bg-gray-900 rounded-2xl shadow-2xl max-w-lg w-full p-8 animate__animated animate__fadeInUp relative">
+          <button onclick="closePopup('popup-brain-tumor')" class="absolute top-3 right-3 text-gray-500 hover:text-indigo-600 text-2xl focus:outline-none">&times;</button>
+          <h4 class="text-2xl font-bold mb-3 text-indigo-700 dark:text-indigo-300 flex items-center gap-2"><i class="fas fa-microscope"></i> Brain Tumor Detection System</h4>
+          <p class="mb-4 text-gray-700 dark:text-gray-200">
+            This project is a deep learning web application that detects brain tumors from MRI scans. Built with Python, TensorFlow, and Flask, it provides a user-friendly interface for uploading images and viewing predictions. The model is trained on a large dataset and achieves high accuracy in tumor classification.
+          </p>
+          <ul class="mb-4 list-disc pl-5 text-gray-700 dark:text-gray-200">
+            <li>Deep learning model using TensorFlow</li>
+            <li>Flask backend for serving predictions</li>
+            <li>Interactive web UI for image upload</li>
+            <li>Deployed on Vercel for easy access</li>
+          </ul>
+          <div class="flex gap-3 mt-4">
+            <a href="https://brain-tumor-ai.vercel.app" target="_blank" class="inline-flex items-center gap-1 px-4 py-2 bg-indigo-600 text-white rounded-lg font-medium shadow hover:bg-indigo-700 transition-all duration-300 btn-animate">
+              <i class="fas fa-external-link-alt mr-1"></i>Live Demo
+            </a>
+            <a href="https://github.com/sanmugam/brain-tumor-detection" target="_blank" class="inline-flex items-center gap-1 px-4 py-2 bg-gray-800 dark:bg-gray-700 hover:bg-gray-900 text-white rounded-lg font-medium shadow transition-all duration-300 btn-animate">
+              <i class="fab fa-github mr-1"></i>GitHub
+            </a>
+          </div>
+        </div>
+      </div>
+
+      <!-- Project 2: Student Management System -->
+      <div class="bg-white/80 dark:bg-gray-900/80 rounded-2xl shadow-xl p-6 flex flex-col transition-transform hover:-translate-y-2 hover:shadow-indigo-400/40 group border border-indigo-100 dark:border-indigo-900 card-float">
+        <h4 class="text-xl font-semibold mb-2 text-indigo-700 dark:text-indigo-300 flex items-center gap-2"><i class="fas fa-database"></i> Student Management System</h4>
+        <div class="flex flex-wrap gap-2 mb-3">
+          <span class="inline-block px-2 py-0.5 bg-indigo-100 dark:bg-indigo-800 text-indigo-700 dark:text-indigo-200 rounded text-xs font-semibold"><i class="fab fa-java mr-1"></i>Java</span>
+          <span class="inline-block px-2 py-0.5 bg-indigo-100 dark:bg-indigo-800 text-indigo-700 dark:text-indigo-200 rounded text-xs font-semibold"><i class="fas fa-leaf mr-1"></i>Spring Boot</span>
+          <span class="inline-block px-2 py-0.5 bg-indigo-100 dark:bg-indigo-800 text-indigo-700 dark:text-indigo-200 rounded text-xs font-semibold"><i class="fas fa-database mr-1"></i>MySQL</span>
+        </div>
+        <p class="mb-4 text-gray-700 dark:text-gray-300">A full-stack web application to manage student records, built with Java Spring Boot and MySQL, featuring CRUD operations and RESTful APIs.</p>
+        <div class="mt-auto flex gap-3">
+          <button onclick="openPopup('popup-student-mgmt')" class="inline-flex items-center gap-1 px-4 py-2 bg-gradient-to-r from-indigo-500 via-blue-500 to-indigo-600 text-white rounded-lg font-medium shadow hover:from-indigo-600 hover:to-blue-600 transition-all duration-300 btn-animate">
+            <i class="fas fa-book-open mr-1"></i>Read More
+          </button>
+          <a href="https://github.com/sanmugam/portfolio" target="_blank" class="inline-flex items-center gap-1 px-4 py-2 bg-gray-800 dark:bg-gray-700 hover:bg-gray-900 text-white rounded-lg font-medium shadow transition-all duration-300 btn-animate">
+            <i class="fab fa-github mr-1"></i>GitHub
+          </a>
+        </div>
+      </div>
+      <!-- Popup for Student Management System -->
+      <div id="popup-student-mgmt" class="fixed inset-0 z-50 flex items-center justify-center bg-black/40 backdrop-blur-sm hidden">
+        <div class="bg-white dark:bg-gray-900 rounded-2xl shadow-2xl max-w-lg w-full p-8 animate__animated animate__fadeInUp relative">
+          <button onclick="closePopup('popup-student-mgmt')" class="absolute top-3 right-3 text-gray-500 hover:text-indigo-600 text-2xl focus:outline-none">&times;</button>
+          <h4 class="text-2xl font-bold mb-3 text-indigo-700 dark:text-indigo-300 flex items-center gap-2"><i class="fas fa-database"></i> Student Management System</h4>
+          <p class="mb-4 text-gray-700 dark:text-gray-200">
+            A robust full-stack web application for managing student records. Built with Java, Spring Boot, and MySQL, it supports CRUD operations, RESTful APIs, and a modern UI for easy data management.
+          </p>
+          <ul class="mb-4 list-disc pl-5 text-gray-700 dark:text-gray-200">
+            <li>Java Spring Boot backend with REST APIs</li>
+            <li>MySQL database for persistent storage</li>
+            <li>Responsive frontend for admin and user operations</li>
+            <li>Deployed demo available online</li>
+          </ul>
+          <div class="flex gap-3 mt-4">
+            <a href="https://student-management-demo.vercel.app" target="_blank" class="inline-flex items-center gap-1 px-4 py-2 bg-indigo-600 text-white rounded-lg font-medium shadow hover:bg-indigo-700 transition-all duration-300 btn-animate">
+              <i class="fas fa-external-link-alt mr-1"></i>Live Demo
+            </a>
+            <a href="https://github.com/sanmugam/portfolio" target="_blank" class="inline-flex items-center gap-1 px-4 py-2 bg-gray-800 dark:bg-gray-700 hover:bg-gray-900 text-white rounded-lg font-medium shadow transition-all duration-300 btn-animate">
+              <i class="fab fa-github mr-1"></i>GitHub
+            </a>
+          </div>
+        </div>
+      </div>
+
+      <!-- Project 3: Real-Time Chat App
+      <div class="bg-white/80 dark:bg-gray-900/80 rounded-2xl shadow-xl p-6 flex flex-col transition-transform hover:-translate-y-2 hover:shadow-indigo-400/40 group border border-indigo-100 dark:border-indigo-900 card-float">
+        <h4 class="text-xl font-semibold mb-2 text-indigo-700 dark:text-indigo-300 flex items-center gap-2"><i class="fas fa-comments"></i> Real-Time Chat App</h4>
+        <div class="flex flex-wrap gap-2 mb-3">
+          <span class="inline-block px-2 py-0.5 bg-indigo-100 dark:bg-indigo-800 text-indigo-700 dark:text-indigo-200 rounded text-xs font-semibold"><i class="fab fa-node-js mr-1"></i>Node.js</span>
+          <span class="inline-block px-2 py-0.5 bg-indigo-100 dark:bg-indigo-800 text-indigo-700 dark:text-indigo-200 rounded text-xs font-semibold"><i class="fab fa-react mr-1"></i>React.js</span>
+          <span class="inline-block px-2 py-0.5 bg-indigo-100 dark:bg-indigo-800 text-indigo-700 dark:text-indigo-200 rounded text-xs font-semibold"><i class="fas fa-bolt mr-1"></i>Socket.io</span>
+        </div>
+        <p class="mb-4 text-gray-700 dark:text-gray-300">A real-time chat application with group and private messaging, built using React.js, Node.js, and Socket.io for instant communication.</p>
+        <div class="mt-auto flex gap-3">
+          <button onclick="openPopup('popup-chat-app')" class="inline-flex items-center gap-1 px-4 py-2 bg-gradient-to-r from-indigo-500 via-blue-500 to-indigo-600 text-white rounded-lg font-medium shadow hover:from-indigo-600 hover:to-blue-600 transition-all duration-300 btn-animate">
+            <i class="fas fa-book-open mr-1"></i>Read More
+          </button>
+          <a href="https://github.com/sanmugam/portfolio" target="_blank" class="inline-flex items-center gap-1 px-4 py-2 bg-gray-800 dark:bg-gray-700 hover:bg-gray-900 text-white rounded-lg font-medium shadow transition-all duration-300 btn-animate">
+            <i class="fab fa-github mr-1"></i>GitHub
+          </a>
+        </div>
+      </div>
+      <!-- Popup for Real-Time Chat App -->
+      <div id="popup-chat-app" class="fixed inset-0 z-50 flex items-center justify-center bg-black/40 backdrop-blur-sm hidden">
+        <div class="bg-white dark:bg-gray-900 rounded-2xl shadow-2xl max-w-lg w-full p-8 animate__animated animate__fadeInUp relative">
+          <button onclick="closePopup('popup-chat-app')" class="absolute top-3 right-3 text-gray-500 hover:text-indigo-600 text-2xl focus:outline-none">&times;</button>
+          <h4 class="text-2xl font-bold mb-3 text-indigo-700 dark:text-indigo-300 flex items-center gap-2"><i class="fas fa-comments"></i> Real-Time Chat App</h4>
+          <p class="mb-4 text-gray-700 dark:text-gray-200">
+            A feature-rich real-time chat application supporting group and private messaging. Built with React.js, Node.js, and Socket.io, it enables instant communication with a modern, responsive interface.
+          </p>
+          <ul class="mb-4 list-disc pl-5 text-gray-700 dark:text-gray-200">
+            <li>Real-time messaging with Socket.io</li>
+            <li>React.js frontend for dynamic UI</li>
+            <li>Node.js backend for scalable performance</li>
+            <li>Group and private chat support</li>
+          </ul>
+          <div class="flex gap-3 mt-4">
+            <a href="https://student-management-demo.vercel.app" target="_blank" class="inline-flex items-center gap-1 px-4 py-2 bg-indigo-600 text-white rounded-lg font-medium shadow hover:bg-indigo-700 transition-all duration-300 btn-animate">
+              <i class="fas fa-external-link-alt mr-1"></i>Live Demo
+            </a>
+            <a href="https://github.com/sanmugam/portfolio" target="_blank" class="inline-flex items-center gap-1 px-4 py-2 bg-gray-800 dark:bg-gray-700 hover:bg-gray-900 text-white rounded-lg font-medium shadow transition-all duration-300 btn-animate">
+              <i class="fab fa-github mr-1"></i>GitHub
+            </a>
+          </div>
+        </div>
+      </div> -->
+
+      <!-- Popup Animation & Logic -->
+      <style>
+        .animate__animated { animation-duration: 0.6s; }
+        .animate__fadeInUp { animation-name: fadeInUp; }
+        @keyframes fadeInUp {
+          from { opacity: 0; transform: translate3d(0, 40px, 0);}
+          to { opacity: 1; transform: none;}
+        }
+      </style>
+      <script>
+        function openPopup(id) {
+          const popup = document.getElementById(id);
+          if (popup) {
+            popup.classList.remove('hidden');
+            // Add animation class
+            const card = popup.querySelector('.animate__animated');
+            if (card) {
+              card.classList.remove('animate__fadeOutDown');
+              card.classList.add('animate__fadeInUp');
+            }
+          }
+          document.body.style.overflow = 'hidden';
+        }
+        function closePopup(id) {
+          const popup = document.getElementById(id);
+          if (popup) {
+            const card = popup.querySelector('.animate__animated');
+            if (card) {
+              card.classList.remove('animate__fadeInUp');
+              card.classList.add('animate__fadeOutDown');
+              card.addEventListener('animationend', function handler() {
+                popup.classList.add('hidden');
+                card.removeEventListener('animationend', handler);
+              });
+            } else {
+              popup.classList.add('hidden');
+            }
+          }
+          document.body.style.overflow = '';
+        }
+        // Fade out animation
+        (function(){
+          const style = document.createElement('style');
+          style.innerHTML = `
+            .animate__fadeOutDown {
+              animation-name: fadeOutDown;
+            }
+            @keyframes fadeOutDown {
+              from { opacity: 1; transform: none;}
+              to { opacity: 0; transform: translate3d(0, 40px, 0);}
+            }
+          `;
+          document.head.appendChild(style);
+        })();
+        // Close popup on ESC key
+        document.addEventListener('keydown', function(e){
+          if (e.key === "Escape") {
+            document.querySelectorAll('[id^="popup-"]').forEach(popup => {
+              if (!popup.classList.contains('hidden')) closePopup(popup.id);
+            });
+          }
+        });
+        // Optional: Close popup when clicking outside the card
+        document.addEventListener('click', function(e){
+          document.querySelectorAll('[id^="popup-"]').forEach(popup => {
+            if (!popup.classList.contains('hidden')) {
+              const card = popup.querySelector('.animate__animated');
+              if (card && !card.contains(e.target) && !e.target.closest('button[onclick^="openPopup"]')) {
+                closePopup(popup.id);
+              }
+            }
+          });
+        });
+      </script>
+      
+      <!-- Project 1.5 -->
+       
+     
+  </section>
+
+  <!-- Contact Section -->
+  <section id="contact" class="max-w-2xl mx-auto py-20 px-4">
+    <h3 class="text-3xl font-bold mb-8 text-center text-indigo-600 dark:text-indigo-400 tracking-tight">Contact</h3>
+    <form id="contact-form" action="https://formspree.io/f/meozrkej" method="POST"
+      class="bg-white/70 dark:bg-gray-900/70 backdrop-blur-lg rounded-2xl shadow-2xl p-8 flex flex-col gap-6 border border-indigo-100 dark:border-indigo-900 transition-all duration-500 scroll-fade-in">
+      <div>
+        <label for="name" class="block mb-1 font-semibold text-indigo-700 dark:text-indigo-300 transition-all">Name</label>
+        <div class="relative">
+          <input type="text" id="name" name="name" required
+            class="peer w-full px-4 py-3 rounded-lg border border-gray-300 dark:border-gray-700 bg-transparent focus:outline-none focus:ring-2 focus:ring-indigo-400 dark:focus:ring-indigo-600 focus:shadow-lg transition placeholder-transparent"
+            placeholder="Your Name" />
+          <i class="fas fa-user absolute left-3 top-1/2 -translate-y-1/2 text-indigo-300 pointer-events-none"></i>
+        </div>
+      </div>
+      <div>
+        <label for="email" class="block mb-1 font-semibold text-indigo-700 dark:text-indigo-300 transition-all">Email</label>
+        <div class="relative">
+          <input type="email" id="email" name="email" required
+            class="peer w-full px-4 py-3 rounded-lg border border-gray-300 dark:border-gray-700 bg-transparent focus:outline-none focus:ring-2 focus:ring-indigo-400 dark:focus:ring-indigo-600 focus:shadow-lg transition placeholder-transparent"
+            placeholder="Your Email" />
+          <i class="fas fa-envelope absolute left-3 top-1/2 -translate-y-1/2 text-indigo-300 pointer-events-none"></i>
+        </div>
+      </div>
+      <div>
+        <label for="message" class="block mb-1 font-semibold text-indigo-700 dark:text-indigo-300 transition-all">Message</label>
+        <div class="relative">
+          <textarea id="message" name="message" rows="4" required
+            class="peer w-full px-4 py-3 rounded-lg border border-gray-300 dark:border-gray-700 bg-transparent focus:outline-none focus:ring-2 focus:ring-indigo-400 dark:focus:ring-indigo-600 focus:shadow-lg transition placeholder-transparent"
+            placeholder="Your Message"></textarea>
+          <i class="fas fa-comment-dots absolute left-3 top-3 text-indigo-300 pointer-events-none"></i>
+        </div>
+      </div>
+      <button type="submit"
+        class="w-full py-3 bg-gradient-to-r from-indigo-500 via-blue-500 to-indigo-600 text-white rounded-lg font-semibold text-lg shadow-lg hover:from-indigo-600 hover:to-blue-600 focus:ring-4 focus:ring-indigo-300 transition-all duration-300 relative overflow-hidden group">
+        <span class="relative z-10"><i class="fas fa-paper-plane mr-2"></i>Send Message</span>
+        <span class="absolute inset-0 rounded-lg opacity-0 group-active:opacity-100 bg-white/20 transition duration-300"></span>
+      </button>
+      <div id="form-message" class="hidden text-green-600 text-center font-medium mt-2"></div>
+    </form>
+
+    
+    
+  </section>
+  <div class="flex justify-center gap-6 mt-8 mb-2">
+    <a href="https://www.linkedin.com/in/sanmugam009-a-/" target="_blank" rel="noopener noreferrer"
+      class="inline-flex items-center justify-center w-12 h-12 rounded-full bg-[#0A66C2] text-white shadow hover:bg-[#004182] transition-colors duration-200 text-2xl"
+      aria-label="LinkedIn">
+      <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24">
+        <path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.761 0 5-2.239 5-5v-14c0-2.761-2.239-5-5-5zm-11 19h-3v-10h3v10zm-1.5-11.268c-.966 0-1.75-.784-1.75-1.75s.784-1.75 1.75-1.75 1.75.784 1.75 1.75-.784 1.75-1.75 1.75zm15.5 11.268h-3v-5.604c0-1.337-.025-3.063-1.868-3.063-1.868 0-2.154 1.459-2.154 2.967v5.7h-3v-10h2.881v1.367h.041c.401-.761 1.381-1.563 2.845-1.563 3.043 0 3.604 2.004 3.604 4.609v5.587z"/>
+      </svg>
+    </a>
+    <a href="https://github.com/Sanmark009/" target="_blank" rel="noopener noreferrer"
+      class="inline-flex items-center justify-center w-12 h-12 rounded-full bg-gray-900 text-white shadow hover:bg-gray-700 transition-colors duration-200 text-2xl"
+      aria-label="GitHub">
+      <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24">
+        <path d="M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.387.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.416-4.042-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.084-.729.084-.729 1.205.084 1.84 1.236 1.84 1.236 1.07 1.834 2.809 1.304 3.495.997.108-.775.418-1.305.762-1.605-2.665-.305-5.466-1.334-5.466-5.931 0-1.31.469-2.381 1.236-3.221-.124-.303-.535-1.523.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.553 3.297-1.23 3.297-1.23.653 1.653.242 2.873.119 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.803 5.624-5.475 5.921.43.372.823 1.102.823 2.222 0 1.606-.014 2.898-.014 3.293 0 .322.216.694.825.576C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12"/>
+      </svg>
+    </a>
+  </div>
+
+  <!-- Footer -->
+  <footer class="text-center py-6 text-gray-500 dark:text-gray-400 text-sm">
+    &copy; 2024 SANMUGAM A. All rights reserved.
+  </footer>
+
+  <!-- Custom Styles for Chips/Badges -->
+  <style>
+    .fade-in, .fade-in.visible { /* Remove old fade-in logic */ }
+  </style>
+
+  <!-- JavaScript for Interactivity, Animations, Theme, Scroll, Form -->
+  <script>
+    // Theme Toggle
+    const themeToggle = document.getElementById('theme-toggle');
+    const themeIcon = document.getElementById('theme-icon');
+    function setTheme(dark) {
+      if (dark) {
+        document.documentElement.classList.add('dark');
+        themeIcon.classList.replace('fa-moon', 'fa-sun');
+        localStorage.setItem('theme', 'dark');
+      } else {
+        document.documentElement.classList.remove('dark');
+        themeIcon.classList.replace('fa-sun', 'fa-moon');
+        localStorage.setItem('theme', 'light');
+      }
+    }
+    // On load, set theme from localStorage or system
+    (() => {
+      const userTheme = localStorage.getItem('theme');
+      if (userTheme) setTheme(userTheme === 'dark');
+      else setTheme(window.matchMedia('(prefers-color-scheme: dark)').matches);
+    })();
+    themeToggle.addEventListener('click', () => {
+      setTheme(!document.documentElement.classList.contains('dark'));
+    });
+
+    // Animate hero text/buttons on load
+    window.addEventListener('DOMContentLoaded', () => {
+      document.querySelectorAll('#home .fade-in').forEach((el, i) => {
+        setTimeout(() => el.classList.add('visible'), 300 + i * 200);
+      });
+    });
+
+    // Scroll reveal for sections
+    // Unified scroll reveal for .scroll-fade-in, .scroll-slide-in, .scroll-zoom-in
+    const revealEls = [
+      ...document.querySelectorAll('.scroll-fade-in, .scroll-slide-in, .scroll-zoom-in')
+    ];
+    const revealObserver = new IntersectionObserver((entries) => {
+      entries.forEach((entry, i) => {
+        if (entry.isIntersecting) {
+          setTimeout(() => entry.target.classList.add('visible'), i * 120);
+        }
+      });
+    }, { threshold: 0.18 });
+    revealEls.forEach(el => revealObserver.observe(el));
+
+    // Smooth scroll for navbar
+    document.querySelectorAll('nav a').forEach(link => {
+      link.addEventListener('click', e => {
+        e.preventDefault();
+        document.querySelector(link.getAttribute('href')).scrollIntoView({ behavior: 'smooth' });
+      });
+    });
+
+    // Scroll-to-top button
+    const scrollBtn = document.getElementById('scroll-top');
+    window.addEventListener('scroll', () => {
+      if (window.scrollY > 300) {
+        scrollBtn.classList.add('opacity-100', 'pointer-events-auto');
+        scrollBtn.classList.remove('opacity-0', 'pointer-events-none');
+      } else {
+        scrollBtn.classList.remove('opacity-100', 'pointer-events-auto');
+        scrollBtn.classList.add('opacity-0', 'pointer-events-none');
+      }
+    });
+    scrollBtn.addEventListener('click', () => window.scrollTo({ top: 0, behavior: 'smooth' }));
+
+    // Contact form AJAX submission to Formspree (no redirect)
+    document.getElementById('contact-form').addEventListener('submit', async function(e) {
+      e.preventDefault();
+      const form = e.target;
+      const formMsg = document.getElementById('form-message');
+      const data = new FormData(form);
+      if (!form.name.value.trim() || !form.email.value.trim() || !form.message.value.trim()) {
+        formMsg.textContent = "Please fill all fields.";
+        formMsg.classList.remove('hidden', 'text-green-600');
+        formMsg.classList.add('text-red-600');
+        return;
+      }
+      try {
+        const response = await fetch('https://formspree.io/f/meozrkej', {
+          method: 'POST',
+          body: data,
+          headers: { 'Accept': 'application/json' }
+        });
+        if (response.ok) {
+          formMsg.textContent = "Thanks for reaching out, SANMUGAM will get back to you soon!";
+          formMsg.classList.remove('hidden', 'text-red-600');
+          formMsg.classList.add('text-green-600');
+          form.reset();
+        } else {
+          formMsg.textContent = "Oops! Something went wrong. Please try again later.";
+          formMsg.classList.remove('hidden', 'text-green-600');
+          formMsg.classList.add('text-red-600');
+        }
+      } catch (err) {
+        formMsg.textContent = "Network error. Please try again.";
+        formMsg.classList.remove('hidden', 'text-green-600');
+        formMsg.classList.add('text-red-600');
+      }
+    });
+
+    // Scroll reveal for contact form
+    window.addEventListener('scroll', () => {
+      const el = document.querySelector('.scroll-fade-in');
+      if (el && !el.classList.contains('visible')) {
+        const rect = el.getBoundingClientRect();
+        if (rect.top < window.innerHeight - 80) {
+          el.classList.add('visible');
+        }
+      }
+    });
+    window.addEventListener('DOMContentLoaded', () => {
+      const el = document.querySelector('.scroll-fade-in');
+      if (el) {
+        const rect = el.getBoundingClientRect();
+        if (rect.top < window.innerHeight - 80) {
+          el.classList.add('visible');
+        }
+      }
+    });
+
+    // Parallax effect for hero background
+    window.addEventListener('scroll', () => {
+      const bg = document.querySelector('.parallax-bg');
+      if (bg) {
+        const offset = window.scrollY * 0.18;
+        bg.style.transform = `translateY(${offset}px)`;
+      }
+    });
+    // Section scroll reveal (staggered)
+    // This block is now redundant as the unified observer handles all scroll-reveal classes
+    // const revealEls = [
+    //   ...document.querySelectorAll('.scroll-fade-in, .scroll-slide-in, .scroll-zoom-in')
+    // ];
+    // const revealObserver = new IntersectionObserver((entries) => {
+    //   entries.forEach((entry, i) => {
+    //     if (entry.isIntersecting) {
+    //       setTimeout(() => entry.target.classList.add('visible'), i * 120);
+    //     }
+    //   });
+    // }, { threshold: 0.18 });
+    // revealEls.forEach(el => revealObserver.observe(el));
+  </script>
+</body>
+</html>
